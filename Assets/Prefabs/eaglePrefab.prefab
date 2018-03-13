@@ -4719,3 +4719,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maximumSpeed: 10
   mass: 1
+  velocity: {x: 0, y: 0, z: 0}
