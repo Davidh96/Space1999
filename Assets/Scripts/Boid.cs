@@ -10,11 +10,13 @@ public class Boid : MonoBehaviour {
     public Vector3 velocity;
     Vector3 force;
 
+    //stores all ttached steering behaviours
     List<SteeringBehaviour> behaviours = new List<SteeringBehaviour>();
 
     
 	// Use this for initialization
 	void Start () {
+        //get the steering behaviours attached to this game object
         SteeringBehaviour[] bh = GetComponents<SteeringBehaviour>();
 		foreach(SteeringBehaviour sb in bh)
         {
@@ -27,11 +29,16 @@ public class Boid : MonoBehaviour {
 
         force = Calculate();
 
+        //calculate the velocity
+        //a = f/m
         Vector3 acceleration = force / mass;
+        //v = a*t
         velocity += acceleration * Time.deltaTime;
 
+        //stop object from going too fast
         velocity = Vector3.ClampMagnitude(velocity, maximumSpeed);
 
+        //add velocity to object
         transform.position += velocity;
 		
 	}
@@ -40,6 +47,7 @@ public class Boid : MonoBehaviour {
     {
         force = Vector3.zero;
 
+        //calculate force for each steering behaviour
         foreach(SteeringBehaviour bh in behaviours)
         {
             if (bh.isActiveAndEnabled)
@@ -51,6 +59,7 @@ public class Boid : MonoBehaviour {
         return force;
     }
 
+    //seek target vector
     public Vector3 SeekForce(Vector3 target)
     {
         Vector3 desired = target - transform.position;
@@ -59,10 +68,13 @@ public class Boid : MonoBehaviour {
         return desired - velocity;
     }
 
+    //arrive at target vector
     public Vector3 ArriveForce(Vector3 target,float slowingDistance)
     {
         Vector3 desired = target - transform.position;
+        //get ramped speed
         float rampedSpeed = maximumSpeed * (desired.magnitude / slowingDistance);
+        //prevent object from going too fast
         rampedSpeed = Mathf.Min(maximumSpeed, rampedSpeed);
         desired.Normalize();
         desired *= rampedSpeed;

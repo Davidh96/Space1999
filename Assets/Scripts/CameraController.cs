@@ -9,12 +9,14 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+        //get leader eagle
         target = GameObject.FindGameObjectWithTag("Leader");
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //look at target eagle
         transform.LookAt(target.transform);
 	}
 }

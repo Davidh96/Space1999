@@ -25,38 +25,38 @@ public class EagleSpawner : MonoBehaviour {
         GameObject leader = GameObject.Instantiate(prefab);
         leader.transform.position = transform.position;
         leader.transform.rotation = transform.rotation;
+        //set tag of leader to leader
         leader.tag = "Leader";
 
+        //add seek behaviour to leader
         leader.AddComponent<SeekBehaviour>();
-        leader.GetComponent<SeekBehaviour>().target = leader.transform.TransformPoint(0, 0, -1000);
-        
+        //seek target 1000 units ahead
+        leader.GetComponent<SeekBehaviour>().target = leader.transform.TransformPoint(0, 0, 1000);
 
 
+        //for each row of followers
         for (int i = 0; i < followers; i++)
         {
             float xGap = gap;
 
+            //if on the other side of leader
             if (i == 1)
             {
                 xGap *= -1;
             }
 
-            //for (int j = 0; j < followers; j++)
-            //{
-            //    GameObject follower = GameObject.Instantiate(prefab);
-            //    offset = leader.transform.position + new Vector3(gap * (j+1), 0, gap * (j+1));
-            //    follower.transform.position = offset;
-            //    follower.transform.rotation = leader.transform.rotation;
-            //}
-
+            //for each follower on one side
             for (int j = 0; j < followers; j++)
             {
                 GameObject follower = GameObject.Instantiate(prefab);
                 offset = new Vector3(xGap * (j + 1), 0, gap * (j + 1));
-                follower.transform.position = leader.transform.TransformPoint(offset);
+                //place the position behind the leader
+                follower.transform.position = leader.transform.TransformPoint(-offset);
                 follower.transform.rotation = leader.transform.rotation;
 
+                //add offset pursue steering behaviour
                 follower.AddComponent<OffsetPursueBehaviour>();
+                //set leader as the leader to offset
                 follower.GetComponent<OffsetPursueBehaviour>().leader = leader.GetComponent<Boid>();
             }
         }

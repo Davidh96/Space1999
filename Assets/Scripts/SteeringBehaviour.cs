@@ -21,5 +21,6 @@ public abstract class SteeringBehaviour : MonoBehaviour {
         boid = GetComponent<Boid>();
     }
 
+    //the force will be calculated here
     abstract public Vector3 Calculate();
 }

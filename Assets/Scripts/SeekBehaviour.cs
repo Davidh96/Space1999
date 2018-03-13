@@ -8,6 +8,7 @@ public class SeekBehaviour : SteeringBehaviour {
 
     public override Vector3 Calculate()
     {
+        //seek target
         return boid.SeekForce(target);
     }
 
